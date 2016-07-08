@@ -35,5 +35,17 @@ public class HelloController {
         model.addAttribute("feed", feed);
         return "hello";
     }
+	
+	@RequestMapping(method=RequestMethod.POST)
+    public String postMessage() {
+        if (connectionRepository.findPrimaryConnection(Facebook.class) == null) {
+            return "redirect:/connect/facebook";
+        }
+
+        model.addAttribute("facebookProfile", facebook.userOperations().getUserProfile());
+        PagedList<Post> feed = facebook.feedOperations().getFeed();
+        model.addAttribute("feed", feed);
+        return "hello";
+    }
 
 }
